@@ -64,19 +64,22 @@ export async function POST(requisicao) {
     client.release();
   }
 }
-export async function GET_ID(id) {
+
+export async function GET() {
   try {
     const result = await pool.query(`
-      SELECT p.*, a.matricula_siape
+      SELECT 
+        p.*,
+        a.matricula_siape
       FROM pessoa p
-      LEFT JOIN administrador a 
+      LEFT JOIN administrador a
         ON p.id_pessoa = a.id_pessoa
-      WHERE a.id_administrador = $1
-      ORDER BY p.id_pessoa
-    `, [id]);
+      ORDER BY p.id_pessoa ASC
+    `);
 
-    return NextResponse.json(result.rows);
+    return NextResponse.json(result.rows, { status: 200 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

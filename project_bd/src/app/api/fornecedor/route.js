@@ -28,7 +28,7 @@ export async function POST(requisicao) {
   }
 }
 
-export async function GET_ALL() {
+export async function GET() {
   try {
     const result = await pool.query(`
       SELECT p.*, f.razao_social, f.nome_fantasia
@@ -48,24 +48,5 @@ export async function GET_ALL() {
   }
 }
 
-export async function GET_ID(id) {
-  try {
-    const result = await pool.query(`
-      SELECT p.*, f.razao_social, f.nome_fantasia
-      FROM pessoa p
-      LEFT JOIN fornecedor f
-        ON p.id_pessoa = f.id_pessoa
-      WHERE f.id_fornecedor = $1
-      ORDER BY p.id_pessoa ASC
-    `, [id]);
 
-    return NextResponse.json(result.rows, { status: 200 });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
 

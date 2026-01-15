@@ -58,30 +58,30 @@ export async function GET() {
   }
 }
 
-export async function DELETE(requisicao) {
-  try {
-    const { searchParams } = new URL(requisicao.url);
-    const id = searchParams.get("id");
+// export async function DELETE(requisicao) {
+//   try {
+//     const { searchParams } = new URL(requisicao.url);
+//     const id = searchParams.get("id");
 
-    if (!id) {
-      return NextResponse.json(
-        { error: "Informe o ID da pessoa para deletar." },
-        { status: 400 }
-      );
-    }
+//     if (!id) {
+//       return NextResponse.json(
+//         { error: "Informe o ID da pessoa para deletar." },
+//         { status: 400 }
+//       );
+//     }
 
-    await pool.query(
-      `DELETE FROM pessoa WHERE id_pessoa = $1`,
-      [id]
-    );
+//     await pool.query(
+//       `DELETE FROM pessoa WHERE id_pessoa = $1`,
+//       [id]
+//     );
 
-    return NextResponse.json(
-      { message: "Pessoa deletada com sucesso." }
-    );
-  } catch (error) {
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
-  }
-}
+//     return NextResponse.json(
+//       { message: "Pessoa deletada com sucesso." }
+//     );
+//   } catch (error) {
+//     return NextResponse.json(
+//       { error: error.message },
+//       { status: 500 }
+//     );
+//   }
+// }
