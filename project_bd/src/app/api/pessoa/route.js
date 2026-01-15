@@ -19,20 +19,24 @@ export async function POST(requisicao) {
       );
     }
 
-    await pool.query(
+  
+    const pessoaResult = await client.query(
       `INSERT INTO pessoa
        (cnpj_cpf, ie, im, setor, email, role)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [cnpj_cpf, ie, im, setor, email, role]
+       VALUES ($1,$2,$3,$4,$5,'administrador')
+       RETURNING id_pessoa`,
+      [cnpj_cpf, ie, im, setor, email]
     );
 
+    const id_pessoa = pessoaResult.rows[0].id_pessoa;
+
     return NextResponse.json(
-      { message: "Pessoa cadastrada com sucesso." },
-      { status: 201 }
+      { message: "Pessoa cadastrada com sucesso.",
+       status: 201, data: pessoaResult.rows[0] } 
     );
   } catch (error) {
     return NextResponse.json(
-      { error: error.message },
+      { erro: error.message },
       { status: 500 }
     );
   }

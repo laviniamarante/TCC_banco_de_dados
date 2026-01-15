@@ -40,8 +40,7 @@ export async function POST(requisicao) {
     );
 
     const id_pessoa = pessoaResult.rows[0].id_pessoa;
-
-    await client.query(
+    const administradordata = await client.query(
       `INSERT INTO administrador (id_pessoa, matricula_siape)
        VALUES ($1, $2)`,
       [id_pessoa, matricula_siape]
@@ -50,8 +49,8 @@ export async function POST(requisicao) {
     await client.query("COMMIT");
 
     return NextResponse.json(
-      { message: "Administrador cadastrado com sucesso." },
-      { status: 201 }
+      { message: "Administrador cadastrado com sucesso.",
+       status: 201, data: administradordata.rows[0]}
     );
 
   } catch (error) {
@@ -65,14 +64,16 @@ export async function POST(requisicao) {
     client.release();
   }
 }
-export async function GET() {
+export async function GET_ID(id) {
   try {
     const result = await pool.query(`
       SELECT p.*, a.matricula_siape
-      FROM administrador a
-      JOIN pessoa p ON p.id_pessoa = a.id_pessoa
+      FROM pessoa p
+      LEFT JOIN administrador a 
+        ON p.id_pessoa = a.id_pessoa
+      WHERE a.id_administrador = $1
       ORDER BY p.id_pessoa
-    `);
+    `, [id]);
 
     return NextResponse.json(result.rows);
   } catch (error) {
