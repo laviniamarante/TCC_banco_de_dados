@@ -30,16 +30,6 @@ export async function POST(requisicao) {
 }
 
 export async function GET() {
-  try {
-    const result = await pool.query(
-      `SELECT * FROM verbas ORDER BY id_verbas ASC`
-    );
-    return NextResponse.json(result.rows);
-  } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
-export async function GET() {
     try {
         const result = await pool.query(`
             SELECT * FROM verbas ORDER BY id_verbas ASC;`);

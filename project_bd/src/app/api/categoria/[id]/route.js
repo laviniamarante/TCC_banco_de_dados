@@ -4,9 +4,9 @@ import pool from "@/lib/db";
 
 
 export async function GET(request, {params}) {
-     const { id } = params;
     try{
-
+        
+        const { id } = await params;
         const result = await pool.query(`SELECT * FROM categoria WHERE id_categoria = $1`, [id]);
 
         if (result.rows.length === 0) {

@@ -4,10 +4,10 @@ import pool from "@/lib/db";
 
 
 export async function GET(request, {params}) {
-     const { id } = params;
     try{
-
-        const result = await pool.query(`SELECT * FROM contrato WHERE id_contrato = $1`, [id]);
+        
+        const { id } = await params;
+        const result = await pool.query(`SELECT * FROM contrato WHERE id_contratos = $1`, [id]);
 
         if (result.rows.length === 0) {
             return NextResponse.json({error: "Registro não encontrado"}, {status:404});
