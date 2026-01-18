@@ -20,12 +20,12 @@ export async function POST(requisicao) {
     }
 
   
-    const pessoaResult = await client.query(
+    const pessoaResult = await pool.query(
       `INSERT INTO pessoa
        (cnpj_cpf, ie, im, setor, email, role)
-       VALUES ($1,$2,$3,$4,$5,'administrador')
+       VALUES ($1,$2,$3,$4,$5, $6)
        RETURNING id_pessoa`,
-      [cnpj_cpf, ie, im, setor, email]
+      [cnpj_cpf, ie, im, setor, email, role]
     );
 
     const id_pessoa = pessoaResult.rows[0].id_pessoa;
